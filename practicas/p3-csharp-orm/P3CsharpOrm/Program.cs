@@ -54,16 +54,7 @@ optionsBuilder.UseNpgsql(connectionString);
 
 using var context = new AppDbContext(optionsBuilder.Options);
 
-try
-{
-    context.Database.Migrate();
-    Console.WriteLine("Migraciones aplicadas correctamente.");
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Error al aplicar migraciones: {ex.Message}");
-    return;
-}
+Console.WriteLine("Base de datos lista. (Las migraciones se aplican con `dotnet ef database update`)");
 
 if (!context.Usuarios.Any())
 {

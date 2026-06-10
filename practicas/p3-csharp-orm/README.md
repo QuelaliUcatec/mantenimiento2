@@ -86,9 +86,16 @@ Implementa `IDesignTimeDbContextFactory<AppDbContext>` para que el CLI de EF Cor
 
 - Carga `.env` manualmente (sin librerías externas)
 - Construye la connection string para Npgsql
-- Aplica migraciones automáticas con `context.Database.Migrate()`
+- Se conecta a la base de datos (las tablas ya existen porque se aplicaron con `dotnet ef database update`)
 - Inserta datos de semilla (usuario y materia) si la tabla está vacía
 - Muestra los registros en consola
+
+> **¿Por qué no usar `context.Database.Migrate()` en el código?**  
+> En el plan original se contempló esa opción, pero se descartó para seguir el flujo estándar de EF Core:
+> - `dotnet ef database update` se ejecuta **una vez** (despliegue/actualización)
+> - `dotnet run` se ejecuta **cada vez** que se inicia la app  
+> Mezclar ambos roles haría que la app necesite permisos de esquema en producción y podría causar conflictos si dos instancias migran simultáneamente.  
+> La separación **migración manual → ejecución de la app** es la práctica recomendada, igual que en Python con Alembic (`alembic upgrade head` por separado de la app).
 
 ---
 
@@ -98,13 +105,13 @@ Implementa `IDesignTimeDbContextFactory<AppDbContext>` para que el CLI de EF Cor
 # 1. Navegar al proyecto
 cd practicas/p3-csharp-orm/P3CsharpOrm
 
-# 2. Crear una migración (ya está creada la inicial)
+# 2. Crear una migración (ya existe la inicial)
 dotnet ef migrations add "Descripcion del cambio"
 
-# 3. Aplicar migraciones a la base de datos
+# 3. Aplicar migraciones a la base de datos (manual, una sola vez)
 dotnet ef database update
 
-# 4. Ejecutar la aplicación
+# 4. Ejecutar la aplicación (no migra, solo usa la base)
 dotnet run
 ```
 
@@ -146,6 +153,7 @@ dotnet ef migrations list
 - La base de datos `prueba_csharp` se crea automáticamente al ejecutar `dotnet ef database update`.
 - Usar el mismo servidor PostgreSQL del `docker-compose.yml` (puerto `5432`).
 - Es una base distinta a `dagc_platform` (usada en Python), no hay conflicto.
-- Se migra con `context.Database.Migrate()` en lugar de `EnsureCreated()` para llevar control de cambios.
+- Las migraciones se aplican **manualmente** con `dotnet ef database update`, no desde el código de la app.  
+  Esto separa la responsabilidad de migrar (una vez al desplegar) de la de ejecutar la aplicación (cada vez que corre).
 - Las migraciones de C# generan una tabla `__EFMigrationsHistory` (equivalente a `alembic_version`).
 - **Target framework:** .NET 9.0 — **EF Core:** 9.0.0 — **Npgsql:** 9.0.0
