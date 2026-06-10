@@ -84,18 +84,10 @@ Implementa `IDesignTimeDbContextFactory<AppDbContext>` para que el CLI de EF Cor
 
 ### Program.cs
 
-- Carga `.env` manualmente (sin librerías externas)
+- Carga `.env` manualmente
 - Construye la connection string para Npgsql
-- Se conecta a la base de datos (las tablas ya existen porque se aplicaron con `dotnet ef database update`)
-- Inserta datos de semilla (usuario y materia) si la tabla está vacía
-- Muestra los registros en consola
-
-> **¿Por qué no usar `context.Database.Migrate()` en el código?**  
-> En el plan original se contempló esa opción, pero se descartó para seguir el flujo estándar de EF Core:
-> - `dotnet ef database update` se ejecuta **una vez** (despliegue/actualización)
-> - `dotnet run` se ejecuta **cada vez** que se inicia la app  
-> Mezclar ambos roles haría que la app necesite permisos de esquema en producción y podría causar conflictos si dos instancias migran simultáneamente.  
-> La separación **migración manual → ejecución de la app** es la práctica recomendada, igual que en Python con Alembic (`alembic upgrade head` por separado de la app).
+- Verifica la conexión con `context.Database.CanConnect()`
+- No tiene lógica de negocio, seed data ni UI — es solo un conector ORM-BD
 
 ---
 
@@ -105,13 +97,13 @@ Implementa `IDesignTimeDbContextFactory<AppDbContext>` para que el CLI de EF Cor
 # 1. Navegar al proyecto
 cd practicas/p3-csharp-orm/P3CsharpOrm
 
-# 2. Crear una migración (ya existe la inicial)
+# 2. Crear una migración cuando cambies los modelos
 dotnet ef migrations add "Descripcion del cambio"
 
-# 3. Aplicar migraciones a la base de datos (manual, una sola vez)
+# 3. Aplicar migraciones a la base de datos
 dotnet ef database update
 
-# 4. Ejecutar la aplicación (no migra, solo usa la base)
+# 4. Verificar conexión
 dotnet run
 ```
 
@@ -144,7 +136,7 @@ dotnet ef migrations list
 | Modelos                | Clases con Column()               | POCO classes + Data Annotations      |
 | Fluent API             | (no aplica)                       | OnModelCreating                      |
 | Cadena de conexión     | postgresql+psycopg2://...         | Host=...;Database=...;Username=...   |
-| Seeds                  | (manual)                          | Program.cs directo                   |
+| Seeds                  | (manual)                          | (no aplica)                          |
 
 ---
 
