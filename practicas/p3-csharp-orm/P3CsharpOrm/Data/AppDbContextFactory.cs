@@ -7,7 +7,8 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
     public AppDbContext CreateDbContext(string[] args)
     {
-        var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env");
+        var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+        envPath = Path.GetFullPath(envPath);
         var envFile = File.Exists(envPath) ? envPath : ".env";
 
         if (File.Exists(envFile))

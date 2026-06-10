@@ -25,15 +25,18 @@ void LoadEnv(string path)
     }
 }
 
-var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env");
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+envPath = Path.GetFullPath(envPath);
 if (File.Exists(envPath))
 {
-    LoadEnv(Path.GetFullPath(envPath));
+    LoadEnv(envPath);
     Console.WriteLine($".env cargado desde: {envPath}");
 }
 else
 {
-    LoadEnv(".env");
+    var localEnv = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+    if (File.Exists(localEnv))
+        LoadEnv(localEnv);
 }
 
 var host = GetEnv("DB_HOST");
