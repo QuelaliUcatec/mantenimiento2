@@ -12,26 +12,26 @@ El siguiente diagrama de clases muestra cómo se agregaron campos progresivament
 classDiagram
     direction LR
     class Migracion_1_Inicial {
-        +Integer id (PK)
-        +String(100) marca
-        +String(100) modelo
+        +Integer id
+        +String marca
+        +String modelo
         +DateTime creado_en
     }
     
     class Migracion_2_Placa {
-        +Integer id (PK)
-        +String(100) marca
-        +String(100) modelo
-        +String(20) placa (UQ, IX)
+        +Integer id
+        +String marca
+        +String modelo
+        +String placa
         +DateTime creado_en
     }
     
     class Migracion_3_Detalles_Final {
-        +Integer id (PK)
-        +String(100) marca
-        +String(100) modelo
-        +String(20) placa (UQ, IX)
-        +String(50) color
+        +Integer id
+        +String marca
+        +String modelo
+        +String placa
+        +String color
         +Integer kilometraje
         +DateTime creado_en
     }
@@ -48,27 +48,27 @@ Este diagrama ilustra cómo interactúa el script de Python, Alembic, el entorno
 
 ```mermaid
 graph TD
-    subgraph Computadora_Host [Entorno Local (Laptop)]
-        subgraph Entorno_Python [Código Python]
-            Main[main.py Script] -->|Usa la Sesión| DBConfig[database.py]
+    subgraph Computadora_Host ["Entorno Local (Laptop)"]
+        subgraph Entorno_Python ["Código Python"]
+            Main["main.py Script"] -->|Usa la Sesión| DBConfig[database.py]
             DBConfig -->|Carga Variables| Dotenv[.env]
-            Models[models/vehiculo.py] -->|Define Entidad| DBConfig
+            Models["models/vehiculo.py"] -->|Define Entidad| DBConfig
             
-            Alembic[Alembic Engine] -->|Lee Metadatos| Models
-            Alembic -->|Aplica Versiones| Versions[migrations/versions/*]
+            Alembic["Alembic Engine"] -->|Lee Metadatos| Models
+            Alembic -->|Aplica Versiones| Versions["migrations/versions/*"]
         end
         
-        subgraph Editor [VS Code / Cursor]
-            DBExt[Extensión Database] -.->|Conexión Visual| PGPort[Puerto Local 5432]
+        subgraph Editor ["VS Code / Cursor"]
+            DBExt["Extensión Database"] -.->|Conexión Visual| PGPort["Puerto Local 5432"]
         end
     end
 
-    subgraph Contenedor_Docker [Docker: ucatec-postgres]
-        PGServer[Postgres Server] <--> PGPort
+    subgraph Contenedor_Docker ["Docker: ucatec-postgres"]
+        PGServer["Postgres Server"] <--> PGPort
         
-        subgraph Base_de_Datos [Base de Datos: p6_mantenimiento]
-            TableVeh[Tabla: vehiculos]
-            TableAlembic[Tabla: alembic_version]
+        subgraph Base_de_Datos ["Base de Datos: p6_mantenimiento"]
+            TableVeh["Tabla: vehiculos"]
+            TableAlembic["Tabla: alembic_version"]
         end
     end
 
@@ -87,11 +87,11 @@ Flujo lógico al ejecutar comandos o el script `./control.sh`:
 flowchart TD
     Start([Inicio]) --> Menu{¿Qué deseas hacer?}
     
-    Menu -->|1. Ver estado| Current[Ejecuta: alembic current]
-    Menu -->|2. Ver historial| History[Ejecuta: alembic history --verbose]
-    Menu -->|3. Aplicar cambios| Upgrade[Ejecuta: alembic upgrade head]
-    Menu -->|4. Revertir cambio| Downgrade[Ejecuta: alembic downgrade -1]
-    Menu -->|5. Probar BD| TestRun[Ejecuta: python main.py]
+    Menu -->|1. Ver estado| Current["Ejecuta: alembic current"]
+    Menu -->|2. Ver historial| History["Ejecuta: alembic history --verbose"]
+    Menu -->|3. Aplicar cambios| Upgrade["Ejecuta: alembic upgrade head"]
+    Menu -->|4. Revertir cambio| Downgrade["Ejecuta: alembic downgrade -1"]
+    Menu -->|5. Probar BD| TestRun["Ejecuta: python main.py"]
     
     Current --> End([Fin])
     History --> End

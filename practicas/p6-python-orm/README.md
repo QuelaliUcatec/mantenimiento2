@@ -16,27 +16,27 @@ El siguiente diagrama muestra el flujo de trabajo, los componentes del proyecto 
 
 ```mermaid
 graph TD
-    subgraph Computadora_Host [Entorno Local (Laptop)]
-        subgraph Entorno_Python [Código Python]
-            Main[main.py Script] -->|Usa la Sesión| DBConfig[database.py]
+    subgraph Computadora_Host ["Entorno Local (Laptop)"]
+        subgraph Entorno_Python ["Código Python"]
+            Main["main.py Script"] -->|Usa la Sesión| DBConfig[database.py]
             DBConfig -->|Carga Variables| Dotenv[.env]
-            Models[models/vehiculo.py] -->|Define Entidad| DBConfig
+            Models["models/vehiculo.py"] -->|Define Entidad| DBConfig
             
-            Alembic[Alembic Engine] -->|Lee Metadatos| Models
-            Alembic -->|Aplica Versiones| Versions[migrations/versions/*]
+            Alembic["Alembic Engine"] -->|Lee Metadatos| Models
+            Alembic -->|Aplica Versiones| Versions["migrations/versions/*"]
         end
         
-        subgraph Editor [VS Code / Cursor]
-            DBExt[Extensión Database] -.->|Conexión Visual| PGPort[Puerto Local 5432]
+        subgraph Editor ["VS Code / Cursor"]
+            DBExt["Extensión Database"] -.->|Conexión Visual| PGPort["Puerto Local 5432"]
         end
     end
 
-    subgraph Contenedor_Docker [Docker: ucatec-postgres]
-        PGServer[Postgres Server] <--> PGPort
+    subgraph Contenedor_Docker ["Docker: ucatec-postgres"]
+        PGServer["Postgres Server"] <--> PGPort
         
-        subgraph Base_de_Datos [Base de Datos: p6_mantenimiento]
-            TableVeh[Tabla: vehiculos]
-            TableAlembic[Tabla: alembic_version]
+        subgraph Base_de_Datos ["Base de Datos: p6_mantenimiento"]
+            TableVeh["Tabla: vehiculos"]
+            TableAlembic["Tabla: alembic_version"]
         end
     end
 
