@@ -1,0 +1,6 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/practicas/p6-python-orm/venv/bin/python",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/practicas/p6-python-orm"
+    ]
+}

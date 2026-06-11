@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Importar el Base y los modelos
 from database import Base
-import models.base   # ← Esto fuerza a cargar el modelo
+import models.vehiculo   # ← Esto fuerza a cargar el modelo
 
 target_metadata = Base.metadata
 
@@ -26,9 +26,8 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Construir URL desde .env
-DATABASE_URL = f"postgresql+psycopg2://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-
+# Configurar la URL de la base de datos desde el entorno
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///mantenimiento.db')
 config.set_main_option('sqlalchemy.url', DATABASE_URL)
 
 def run_migrations_offline() -> None:
@@ -44,6 +43,7 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 def run_migrations_online() -> None:
+    # Para SQLite, evitamos conflictos de bloqueo configurando poolclass si es necesario
     configuration = config.get_section(config.config_ini_section) or {}
     connectable = engine_from_config(
         configuration,
