@@ -50,6 +50,15 @@ namespace P3CsharpOrm.Data
 
                 entity.HasIndex(e => e.NumeroCelular)
                     .IsUnique(); // Crea el índice único en Postgres
+
+                // Edad: int, nullable
+                entity.Property(e => e.Edad)
+                    .HasColumnName("edad");
+
+                // Direccion: varchar(200), nullable
+                entity.Property(e => e.Direccion)
+                    .HasColumnName("direccion")
+                    .HasMaxLength(200);
               
                 // CreadoEn: timestamp, default: now()
                 entity.Property(e => e.CreadoEn)

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using P3CsharpOrm.Data;
@@ -11,9 +12,11 @@ using P3CsharpOrm.Data;
 namespace P3CsharpOrm.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612233646_AgregarDireccionUsuario")]
+    partial class AgregarDireccionUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,6 +45,15 @@ namespace P3CsharpOrm.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("creado_en")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Direccion")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("direccion");
+
+                    b.Property<int?>("Edad")
+                        .HasColumnType("integer")
+                        .HasColumnName("edad");
 
                     b.Property<string>("Email")
                         .IsRequired()

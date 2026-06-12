@@ -12,8 +12,8 @@ using P3CsharpOrm.Data;
 namespace P3CsharpOrm.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260610234919_Crear tablas Usuario y Materia")]
-    partial class CreartablasUsuarioyMateria
+    [Migration("20260612233608_AgregarEdadUsuario")]
+    partial class AgregarEdadUsuario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,49 +25,12 @@ namespace P3CsharpOrm.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("P3CsharpOrm.Models.Materia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ActualizadoEn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("actualizado_en")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("ContenidoMinimo")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreadoEn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("creado_en")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("Descripcion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Nombre");
-
-                    b.ToTable("materias");
-                });
-
             modelBuilder.Entity("P3CsharpOrm.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -75,34 +38,34 @@ namespace P3CsharpOrm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("actualizado_en")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("ContraseñaHash")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<DateTime>("CreadoEn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("creado_en")
-                        .HasDefaultValueSql("now()");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("Edad")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("edad");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("email");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombre");
 
                     b.Property<string>("NumeroCelular")
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("numero_celular");
 
                     b.HasKey("Id");
 
@@ -112,7 +75,7 @@ namespace P3CsharpOrm.Migrations
                     b.HasIndex("NumeroCelular")
                         .IsUnique();
 
-                    b.ToTable("usuarios");
+                    b.ToTable("usuarios", (string)null);
                 });
 #pragma warning restore 612, 618
         }

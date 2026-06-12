@@ -13,6 +13,10 @@ namespace P3CsharpOrm.Models
 
         public string? NumeroCelular { get; set; } // UNIQUE y Index se configurarán en el Fluent API
 
+        public int? Edad { get; set; }
+
+        public string? Direccion { get; set; }
+
         // Por defecto, .NET maneja DateTime. En Postgres se mapeará a timestamp
         public DateTime CreadoEn { get; set; } = DateTime.UtcNow;
 
