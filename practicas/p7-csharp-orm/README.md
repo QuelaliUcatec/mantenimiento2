@@ -178,8 +178,8 @@ classDiagram
         +DateTime ActualizadoEn
     }
 
-    Migracion_1_CreacionTablaUsuario --> Migracion_2_AgregarEdadUsuario : "Migración 2"
-    Migracion_2_AgregarEdadUsuario --> Migracion_3_AgregarDireccionUsuario : "Migración 3"
+    Migracion_1_CreacionTablaUsuario --> Migracion_2_AgregarEdadUsuario : Migracion_2
+    Migracion_2_AgregarEdadUsuario --> Migracion_3_AgregarDireccionUsuario : Migracion_3
 ```
 
 1. **Migración 1: Creación de la Tabla (`CreacionTablaUsuario`)**

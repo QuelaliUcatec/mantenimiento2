@@ -41,8 +41,8 @@ classDiagram
         +DateTime ActualizadoEn
     }
 
-    Migracion_1_CreacionTablaUsuario --> Migracion_2_AgregarEdadUsuario : "Migración 2: Agregar edad"
-    Migracion_2_AgregarEdadUsuario --> Migracion_3_AgregarDireccionUsuario : "Migración 3: Agregar dirección"
+    Migracion_1_CreacionTablaUsuario --> Migracion_2_AgregarEdadUsuario : Migracion_2_Agregar_edad
+    Migracion_2_AgregarEdadUsuario --> Migracion_3_AgregarDireccionUsuario : Migracion_3_Agregar_direccion
 ```
 
 ---
