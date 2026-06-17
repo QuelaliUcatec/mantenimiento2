@@ -133,6 +133,8 @@ mongod started
 
 ## 6. Conectarse a MongoDB con mongosh
 
+**mongosh** (MongoDB Shell) es el shell interactivo oficial de MongoDB. Viene instalado dentro de la imagen `mongo:7`, no hace falta instalarlo aparte. Permite ejecutar comandos y consultas en JavaScript directamente contra la base de datos.
+
 ```bash
 docker exec -it mongo-server mongosh -u root -p mongo_secret_pass
 ```
