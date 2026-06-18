@@ -1,4 +1,0 @@
-SQLAlchemy>=2.0.0
-alembic
-psycopg2-binary
-python-dotenv
