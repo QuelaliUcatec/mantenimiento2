@@ -1,112 +1,57 @@
-# Microevaluación 4 — MongoDB + Mongo Express
-**Estudiante** Fernando Hernan Saavedra Vargas
-**Materia:** Gestión y Manejo de Base de Datos II 
-**Tema:** Bases de datos NoSQL con MongoDB  
-**Duración estimada:** 25 minutos  
-**Total:** 5 puntos  
+# p4-no-sql — Bases de Datos NoSQL con MongoDB
+
+> Práctica orientada al estudio y despliegue de un sistema de base de datos NoSQL utilizando **MongoDB** como DBMS documental, mediante contenedores Docker.
 
 ---
 
-## Instrucciones
+## Documentación
 
-1. Clonar el repositorio: `git clone https://github.com/QuelaliUcatec/mantenimiento2.git`
-2. Crear una rama nueva con tu nombre: `git checkout -b FernandoSaavedra/Microevalucion-4`
-3. Ubicarse en la carpeta del proyecto: `cd practicas/p4-no-sql`
-4. Asegurate de tener los contenedores corriendo: `docker compose up -d`
-5. Conectate a MongoDB con: `docker exec -it mongo-server mongosh -u root -p mongo_secret_pass` (mongosh = MongoDB Shell interactivo, viene instalado en la imagen)
-6. Todos los comandos se ejecutan dentro de `mongosh`
-7. Después de cada comando, verificá el resultado en Mongo Express (`http://localhost:8081`, usuario: `admin`, contraseña: `admin`)
-8. Mostrá cada resultado al docente
+| # | Documento | Descripción |
+|:-:|:----------|:------------|
+| 1 | [Introducción a NoSQL](docs/01-introduccion-nosql.md) | Modelos NoSQL (documentos, grafos, clave-valor, columnas), Teorema CAP, SQL vs NoSQL, Big Data y tendencias |
+| 2 | [Paso a paso](docs/02-paso-a-paso.md) | Cómo levantar el proyecto con Docker, configurar, conectar y administrar |
+| 3 | [Ejemplo básico guiado](docs/03-ejemplo-basico.md) | Primeros pasos: crear DB, colección, CRUD completo y visualizar en Mongo Express |
+| 4 | [Ejercicios básicos](docs/04-ejercicios.md) | Ejercicios prácticos de MongoDB + introducción a Redis, Neo4j y almacenamiento cloud |
+| 5 | [Integración SQL + NoSQL](docs/05-integracion.md) | Polyglot persistence, arquitecturas híbridas y casos empresariales |
+| 6 | [Glosario de términos](docs/06-glosario.md) | Definiciones de conceptos clave usados en la documentación |
+| 7 | [Referencias](docs/07-referencias.md) | Enlaces a documentación oficial, tutoriales y recursos |
 
 ---
 
-## Parte A — CRUD en mongosh + verificación en Mongo Express (4 pts)
+## Inicio rápido
 
-Creá la base de datos `microeval` y la colección `empleados`. Insertá los siguientes documentos:
+```bash
+# Clonar e ingresar al proyecto
+cd practicas/p4-no-sql
 
-```javascript
-db.empleados.insertMany([
-  { nombre: "Lucía",   puesto: "Desarrolladora", salario: 1200, departamento: "IT",       activo: true },
-  { nombre: "Carlos",  puesto: "Analista",        salario: 900,  departamento: "Finanzas", activo: true },
-  { nombre: "María",   puesto: "Desarrolladora",  salario: 1500, departamento: "IT",       activo: false },
-  { nombre: "Pedro",   puesto: "Tester",          salario: 800,  departamento: "IT",       activo: true }
-])
+# Ver/editar credenciales
+cat .env
+
+# Iniciar servicios
+docker compose up -d
+
+# Verificar
+docker compose ps
+
+# Conectarse a MongoDB
+docker exec -it mongo-server mongosh -u root -p mongo_secret_pass
+
+# Abrir Mongo Express
+open http://localhost:8081
+
+# Detener
+docker compose down
 ```
 
-Después de insertar, **verificar en Mongo Express** que los 4 documentos aparecen en la colección `empleados` de la base `microeval`. (0,7 pts — 0,4 comando + 0,3 verificación)
+## Servicios
 
-![alt text](image-7.png)
+| Servicio | Puerto | Credenciales |
+|:---------|:-------|:-------------|
+| MongoDB | `27017` | `root` / `mongo_secret_pass` |
+| Mongo Express | `8081` | `admin` / `admin` |
 
----
-
-**1.** Listar todos los empleados activos y verificar el resultado en Mongo Express. (0,7 pts — 0,4 comando + 0,3 verificación)
-
-javascript
-
-![alt text](image.png)
-
-
-
-
----
-
-**2.** Mostrar solo `nombre` y `salario` de los empleados de IT, sin mostrar `_id`, y verificar en Mongo Express. (0,7 pts — 0,4 comando + 0,3 verificación)
-
-javascript
-
-![alt text](image-1.png)
-
----
-
-**3.** Incrementar el salario de **Lucía** en 200 y verificar el cambio en Mongo Express. (0,7 pts — 0,4 comando + 0,3 verificación)
-
-javascript
-
-![alt text](image-2.png)
-
----
-
-**4.** Contar cuántos empleados hay por departamento usando `aggregate` y verificar en Mongo Express. (0,7 pts — 0,4 comando + 0,3 verificación)
-
-```javascript
+## Connection String
 
 ```
-![alt text](image-3.png)
----
-
-**5.** Eliminar todos los empleados inactivos (`activo: false`) y verificar en Mongo Express que ya no aparecen. (0,7 pts — 0,4 comando + 0,3 verificación)
-
-javascript
-
-![alt text](image-4.png)
-
----
-
-## Parte B — Agregar desde Mongo Express y verificar en mongosh (0,5 pts)
-
-**6.** Desde la interfaz de Mongo Express, **agregá un nuevo empleado** con los campos que quieras. (0,25 pts)
-
-![alt text](image-5.png)
-
-**7.** Volvé a `mongosh` y ejecutá `db.empleados.find()` para confirmar que el nuevo empleado aparece. (0,25 pts)
-![alt text](image-6.png)
----
-
-## Criterios de evaluación
-
-| Ítem | Puntos |
-|:-----|:-------|
-| Inserción inicial + verificación en Express | 0,7 |
-| 1 — Listar activos + verificar en Express | 0,7 |
-| 2 — Proyección con filtro + verificar en Express | 0,7 |
-| 3 — Incrementar salario (`$inc`) + verificar en Express | 0,7 |
-| 4 — Aggregation (`$group`) + verificar en Express | 0,7 |
-| 5 — Eliminar (`deleteMany`) + verificar en Express | 0,7 |
-| 6 — Agregar desde Mongo Express | 0,25 |
-| 7 — Verificar desde mongosh | 0,25 |
-| Presentación y orden | 0,5 |
-| **Total** | **5** |
-
----
-
-
+mongodb://root:mongo_secret_pass@localhost:27017/
+```
